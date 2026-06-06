@@ -1,45 +1,27 @@
 package com.terra.api.controller;
 
-import com.terra.api.model.DashboardSummary;
+import com.terra.api.service.CacheInvalidationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Instant;
-import java.util.List;
+import java.util.Map;
 
-// service/NotionService.java
-@Service
+@RestController
+@RequestMapping("/api/webhooks")
 @RequiredArgsConstructor
-public class NotionService {
+public class WebhookController {
 
-    private final WebClient notionWebClient;
+    private final CacheInvalidationService cacheInvalidationService;
 
-    @Cacheable(value = "dashboardSummary", key = "'summary'")
-    public DashboardSummary getDashboardSummary() {
-        // Fire parallel calls with Mono.zip
-        Mono<List<Object>> tasksMono = fetchDatabase("tasks-db-id");
-        Mono<List<Object>> goalsMono = fetchDatabase("goals-db-id");
-        Mono<List<Object>> projectsMono = fetchDatabase("projects-db-id");
-
-        return Mono.zip(tasksMono, goalsMono, projectsMono)
-                .map(tuple -> DashboardSummary.builder()
-                        .tasks(tuple.getT1())
-                        .goals(tuple.getT2())
-                        .projects(tuple.getT3())
-                        .cachedAt(Instant.now())
-                        .build()
-                )
-                .block();  // block() is correct here — we're in Spring MVC context
-    }
-
-    private Mono<List<Object>> fetchDatabase(String databaseId) {
-        return notionWebClient.post()
-                .uri("/databases/{id}/query", databaseId)
-                .retrieve()
-                .bodyToMono(NotionQueryResponse.class)
-                .map(NotionQueryResponse::getResults);
+    @PostMapping("/notion")
+    public ResponseEntity<Map<String, String>> handleNotionWebhook(@RequestBody Map<String, Object> payload) {
+        // TODO: Validate webhook signature from X-Notion-Signature header
+        cacheInvalidationService.invalidateDashboardCache();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(Map.of("status", "received"));
     }
 }

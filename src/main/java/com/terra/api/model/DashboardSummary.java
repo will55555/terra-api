@@ -1,7 +1,20 @@
 package com.terra.api.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.Instant;
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DashboardSummary {
-    public static Object builder() {
-        return null;
-    }
+    private List<Object> tasks;
+    private List<Object> goals;
+    private List<Object> projects;
+    private Instant cachedAt;
 }
