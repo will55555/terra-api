@@ -1,4 +1,7 @@
 package com.terra.api.model;
 
-public class TerraDashboard {
+public class DashboardSummary {
+    public static Object builder() {
+        return null;
+    }
 }
