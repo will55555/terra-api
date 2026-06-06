@@ -1,23 +1,22 @@
 spring:
   application:
     name: terra-api
+  server:
+    port: 8081
+  management:
     server:
-      port: 8081  # 8080 used by ROMS,PIOS, etc... on same EC2
+      port: 8082
+    endpoints:
+      web:
+        exposure:
+          include: health
 
-    management:
-      server:
-        port: 8082          # separate port — EC2 SG allows health checks from anywhere
-      endpoints:
-        web:
-          exposure:
-            include: health
-
-    terra:
-      notion:
-        api-key: ${NOTION_API_KEY:sk-test-placeholder}
-        base-url: https://api.notion.com/v1
-        timeout-ms: 5000
-      webhooks:
-        notion-secret: ${NOTION_WEBHOOK_SECRET}
-      cache:
-        default-ttl-minutes: 15
+terra:
+  notion:
+    api-key: ${NOTION_API_KEY:sk-test-placeholder}
+    base-url: https://api.notion.com/v1
+    timeout-ms: 5000
+  webhooks:
+    notion-secret: ${NOTION_WEBHOOK_SECRET:}
+  cache:
+    default-ttl-minutes: 15
