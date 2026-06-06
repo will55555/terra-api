@@ -14,7 +14,7 @@ spring:
 
     terra:
       notion:
-        api-key: ${NOTION_API_KEY}
+        api-key: ${NOTION_API_KEY:sk-test-placeholder}
         base-url: https://api.notion.com/v1
         timeout-ms: 5000
       webhooks:

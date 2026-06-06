@@ -1,6 +1,7 @@
 package com.terra.api.service;
 
 import com.terra.api.model.DashboardSummary;
+import com.terra.api.model.NotionQueryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

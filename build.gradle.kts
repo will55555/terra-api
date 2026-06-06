@@ -22,6 +22,8 @@ dependencies {
 	// Caching
 	implementation("org.springframework.boot:spring-boot-starter-cache")
 	implementation("com.github.ben-manes.caffeine:caffeine")
+	// Environment variables from .env
+	implementation("io.github.cdimascio:dotenv-java:3.0.0")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	compileOnly("org.projectlombok:lombok")
