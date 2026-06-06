@@ -21,9 +21,9 @@ public class NotionService {
     @Cacheable(value = "dashboardSummary", key = "'summary'")
     public DashboardSummary getDashboardSummary() {
         // Fire parallel calls with Mono.zip
-        Mono<List<Object>> tasksMono = fetchDatabase("tasks-db-id");
-        Mono<List<Object>> goalsMono = fetchDatabase("goals-db-id");
-        Mono<List<Object>> projectsMono = fetchDatabase("projects-db-id");
+        Mono<List<Object>> tasksMono = fetchDatabase("6002b34b-8bff-456a-aa43-4eed8f643dcd");
+        Mono<List<Object>> goalsMono = fetchDatabase("4b271d70-2037-4974-b573-ce0813bc414b");
+        Mono<List<Object>> projectsMono = fetchDatabase("cf8f7353-f469-44bf-bbf2-56e1dfa280f3");
 
         return Mono.zip(tasksMono, goalsMono, projectsMono)
                 .map(tuple -> DashboardSummary.builder()
